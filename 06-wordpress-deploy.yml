@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: wordpress-deploy
+  name: wordpress-deploy
+  namespace: mini-projet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wordpress-deploy
+    spec:
+          containers:
+          - env:
+            - name: WORDPRESS_DB_NAME
+              value: wordpress
+            - name: WORDPRESS_DB_USER
+              value: wordpress
+            - name: WORDPRESS_DB_PASSWORD
+              value: wordpress
+            - name: WORDPRESS_DB_HOST
+              value: mysql-deploy
+            image: wordpress
+            name: wordpress
+            ports:
+            - containerPort: 80
+            resources: {}
+            volumeMounts:
+               - name: wordpress-persistent-storage
+                 mountPath: /var/www/html
+          volumes:
+          - name: wordpress-persistent-storage
+            hostPath:
+               path: /data/wordpress
+status: {}
